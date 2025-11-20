@@ -165,3 +165,116 @@ stateDiagram-v2
       процесса оплаты
     end note
 ```
+# Покупка билетов в кино
+
+```mermaid
+journey
+    title Путь пользователя: Покупка билетов в кино
+    section Поиск фильма
+      Просмотр афиши: 5: Пользователь
+      Выбор фильма: 4: Пользователь
+      Чтение отзывов: 3: Пользователь
+    section Выбор сеанса
+      Выбор даты и времени: 4: Пользователь
+      Выбор кинотеатра: 3: Пользователь
+      Проверка формата (2D/3D): 4: Пользователь
+    section Выбор мест
+      Просмотр схемы зала: 5: Пользователь
+      Выбор удобных мест: 5: Пользователь
+      Подтверждение выбора: 4: Пользователь
+    section Оплата
+      Ввод данных карты: 2: Пользователь
+      Подтверждение оплаты: 3: Пользователь
+      Ожидание подтверждения: 2: Пользователь
+    section Получение билетов
+      Получение e-mail: 4: Пользователь
+      Сохранение QR-кода: 5: Пользователь
+      Добавление в календарь: 3: Пользователь
+    section После посещения
+      Оценка фильма: 3: Пользователь
+      Делиться впечатлениями: 4: Пользователь
+```
+# ER-диаграмма: Социальная сеть
+
+```mermaid
+erDiagram
+    USERS {
+        bigint user_id PK
+        varchar username UK
+        varchar email UK
+        varchar password_hash
+        varchar full_name
+        text bio
+        datetime created_at
+        datetime updated_at
+        boolean is_active
+    }
+
+    POSTS {
+        bigint post_id PK
+        bigint author_id FK
+        text content
+        varchar image_url
+        datetime created_at
+        datetime updated_at
+        boolean is_published
+        integer like_count
+    }
+
+    COMMENTS {
+        bigint comment_id PK
+        bigint post_id FK
+        bigint author_id FK
+        text content
+        datetime created_at
+        datetime updated_at
+        bigint parent_comment_id FK
+    }
+
+    LIKES {
+        bigint user_id PK,FK
+        bigint post_id PK,FK
+        datetime created_at
+    }
+
+    FOLLOWS {
+        bigint follower_id PK,FK
+        bigint following_id PK,FK
+        datetime created_at
+    }
+
+    %% Relationships
+    USERS ||--o{ POSTS : "creates"
+    USERS ||--o{ COMMENTS : "writes"
+    POSTS ||--o{ COMMENTS : "has"
+    USERS }o--o{ LIKES : "gives"
+    POSTS }o--o{ LIKES : "receives"
+    USERS }|--|| USERS : "follows"
+```
+# Сервис доставки еды
+```mermaid
+flowchart TD
+    A[Клиент открывает приложение] --> B[Выбор ресторана и блюд]
+    B --> C[Оформление заказа]
+    C --> D{Оплата успешна?}
+    D -->|Нет| E[Повторная попытка оплаты]
+    E --> D
+    D -->|Да| F[Уведомление ресторану]
+    F --> G[Приготовление заказа]
+    G --> H[Поиск курьера]
+    H --> I[Курьер забирает заказ]
+    I --> J[Доставка клиенту]
+    J --> K[Подтверждение получения]
+    K --> L[Завершение заказа]
+    
+    style A fill:#e1f5fe
+    style L fill:#c8e6c9
+```
+# Диаграмма: Пропорции автомобилей на российском рынке
+
+```mermaid
+pie title Рынок автомобилей в России (2024)
+    "Иномарки" : 65
+    "Отечественные" : 20
+    "Совместное производство" : 15
+```
